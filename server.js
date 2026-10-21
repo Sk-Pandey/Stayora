@@ -5,9 +5,10 @@ let dbUrl = "mongodb://127.0.0.1:27017/Stayora";
 const Listing = require("./models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override");
+const ejsMate = require("ejs-mate");
 
 app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
+app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
@@ -26,10 +27,13 @@ app.get("/", (req, res) => {
 });
 app.get("/listings", async (req, res) => {
   let allListings = await Listing.find();
-  res.render("listings/index.ejs", { allListings });
+  res.render("listings/index.ejs", {
+    allListings,
+    title: "All Listings | StayHub",
+  });
 });
 app.get("/listings/new", (req, res) => {
-  res.render("listings/new.ejs");
+  res.render("listings/new.ejs", { title: "Add New Place | StayHub" });
 });
 app.post("/listings", async (req, res) => {
   const newListing = new Listing(req.body.listing);
@@ -39,13 +43,19 @@ app.post("/listings", async (req, res) => {
 app.get("/listings/:id", async (req, res) => {
   let { id } = req.params;
   let listingDetail = await Listing.findById(id);
-  res.render("listings/listingDetail.ejs", { listingDetail });
+  res.render("listings/listingDetail.ejs", {
+    listingDetail,
+    title: `${listingDetail.title} | StayHub`,
+  });
 });
 
 app.get("/listings/:id/edit", async (req, res) => {
   let { id } = req.params;
   let listingDetail = await Listing.findById(id);
-  res.render("listings/edit.ejs", { listingDetail });
+  res.render("listings/edit.ejs", {
+    listingDetail,
+    title: `Edit: ${listingDetail.title} | StayHub`,
+  });
 });
 app.put("/listings/:id", async (req, res) => {
   let { id } = req.params;

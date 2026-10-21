@@ -1,371 +1,94 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= listingDetail.title %> | Listing Details</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Font: Plus Jakarta Sans -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      body {
-        font-family: "Plus Jakarta Sans", sans-serif;
-      }
-    </style>
-  </head>
-  <body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
-    <!-- Top Navigation Bar -->
-    <header
-      class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs"
+<% layout("/layouts/boilerplate") %>
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+  <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
+    <a
+      href="/listings"
+      class="inline-flex items-center text-sm font-semibold text-slate-600 hover:text-emerald-600 transition-colors"
     >
-      <div
-        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+      &larr; Back to all listings
+    </a>
+
+    <div class="flex items-center gap-2">
+      <form
+        action="/listings/<%= listingDetail._id %>/edit"
+        method="GET"
+        class="inline"
       >
-        <a
-          href="/listings"
-          class="inline-flex items-center text-sm font-semibold text-slate-600 hover:text-emerald-600 transition-colors"
+        <button
+          type="submit"
+          class="px-3 py-1.5 text-xs sm:text-sm font-semibold text-slate-700 bg-white hover:bg-slate-100 rounded-lg border border-slate-200 cursor-pointer"
         >
-          <svg
-            class="w-4 h-4 mr-1.5"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-            />
-          </svg>
-          Back to all listings
-        </a>
+          Edit
+        </button>
+      </form>
 
-        <!-- Top Right Actions as Forms -->
-        <div class="flex items-center space-x-2 sm:space-x-3">
-          <!-- Edit Form (GET Request) -->
-          <form
-            action="/listings/<%= listingDetail._id %>/edit"
-            method="GET"
-            class="inline"
-          >
-            <button
-              type="submit"
-              class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 hover:text-slate-900 rounded-lg transition-colors border border-slate-200/60 cursor-pointer"
-            >
-              <svg
-                class="w-4 h-4 text-slate-500"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-                />
-              </svg>
-              <span>Edit</span>
-            </button>
-          </form>
-
-          <!-- Delete Form (POST with _method=DELETE) -->
-          <form
-            action="/listings/<%= listingDetail._id %>?_method=DELETE"
-            method="POST"
-            class="inline"
-            onsubmit="
-              return confirm(
-                'Are you sure you want to permanently delete this listing?',
-              );
-            "
-          >
-            <button
-              type="submit"
-              class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-lg transition-colors border border-rose-200/70 cursor-pointer"
-            >
-              <svg
-                class="w-4 h-4 text-rose-500"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                />
-              </svg>
-              <span>Delete</span>
-            </button>
-          </form>
-
-          <button
-            class="p-2 text-slate-500 hover:text-rose-500 hover:bg-slate-100 rounded-full transition-colors"
-            title="Save"
-          >
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
-    </header>
-
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-      <!-- Title & Location Bar -->
-      <div class="mb-6">
-        <div
-          class="flex items-center text-sm font-semibold text-emerald-600 mb-2"
-        >
-          <svg
-            class="w-4 h-4 mr-1.5 shrink-0"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-              clip-rule="evenodd"
-            />
-          </svg>
-          <span
-            ><%= listingDetail.location %>, <%= listingDetail.country %></span
-          >
-        </div>
-        <h1
-          class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight"
-        >
-          <%= listingDetail.title %>
-        </h1>
-      </div>
-
-      <!-- Hero Image -->
-      <div
-        class="relative w-full aspect-[16/9] sm:aspect-[21/9] max-h-[500px] overflow-hidden rounded-2xl sm:rounded-3xl shadow-md bg-slate-100 mb-8 sm:mb-12"
+      <form
+        action="/listings/<%= listingDetail._id %>?_method=DELETE"
+        method="POST"
+        class="inline"
+        onsubmit="
+          return confirm('Are you sure you want to delete this listing?');
+        "
       >
-        <img
-          src="<%= listingDetail.image %>"
-          alt="<%= listingDetail.title %>"
-          class="w-full h-full object-cover"
-          onerror="
-            this.src =
-              'https://placehold.co/1200x600?text=Listing+Image+Unavailable'
-          "
-        />
+        <button
+          type="submit"
+          class="px-3 py-1.5 text-xs sm:text-sm font-semibold text-rose-600 bg-white hover:bg-rose-50 rounded-lg border border-rose-200 cursor-pointer"
+        >
+          Delete
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="mb-6">
+    <div class="text-sm font-semibold text-emerald-600 mb-2">
+      <%= listingDetail.location %>, <%= listingDetail.country %>
+    </div>
+    <h1
+      class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight"
+    >
+      <%= listingDetail.title %>
+    </h1>
+  </div>
+
+  <div
+    class="relative w-full aspect-[16/9] max-h-[500px] overflow-hidden rounded-2xl shadow-md bg-slate-100 mb-8"
+  >
+    <img
+      src="<%= listingDetail.image %>"
+      alt="<%= listingDetail.title %>"
+      class="w-full h-full object-cover"
+      onerror="this.src = 'https://placehold.co/1200x600?text=No+Image'"
+    />
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+    <div class="lg:col-span-2 space-y-6">
+      <div class="pb-4 border-b border-slate-200">
+        <h2 class="text-xl font-bold text-slate-900 mb-2">About this place</h2>
+        <p class="text-slate-600 leading-relaxed whitespace-pre-line">
+          <%= listingDetail.description %>
+        </p>
       </div>
+    </div>
 
-      <!-- Main Content Grid -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-12 items-start">
-        <!-- Left: Listing Info & Description -->
-        <div class="lg:col-span-2 space-y-8">
-          <!-- Overview Badges -->
-          <div
-            class="flex flex-wrap items-center gap-3 pb-6 border-b border-slate-200"
-          >
-            <div
-              class="inline-flex items-center bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-emerald-200/60"
-            >
-              Verified Place
-            </div>
-            <div
-              class="inline-flex items-center bg-slate-100 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-full"
-            >
-              📍 <%= listingDetail.location %>
-            </div>
-            <div
-              class="inline-flex items-center bg-slate-100 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-full"
-            >
-              🌐 <%= listingDetail.country %>
-            </div>
-          </div>
-
-          <!-- Description Section -->
-          <div>
-            <h2 class="text-xl font-bold text-slate-900 mb-3">
-              About this place
-            </h2>
-            <div
-              class="text-slate-600 leading-relaxed text-base sm:text-lg whitespace-pre-line"
-            >
-              <%= listingDetail.description %>
-            </div>
-          </div>
-
-          <!-- Amenities / Highlights Placeholder -->
-          <div class="pt-6 border-t border-slate-200">
-            <h3 class="text-lg font-bold text-slate-900 mb-4">
-              What this place offers
-            </h3>
-            <div class="grid grid-cols-2 gap-3 text-sm text-slate-600">
-              <div class="flex items-center gap-2">
-                <span>📶</span> Fast Wi-Fi
-              </div>
-              <div class="flex items-center gap-2">
-                <span>❄️</span> Air conditioning
-              </div>
-              <div class="flex items-center gap-2">
-                <span>🍳</span> Dedicated kitchen
-              </div>
-              <div class="flex items-center gap-2">
-                <span>🚗</span> Free parking
-              </div>
-            </div>
-          </div>
+    <div class="lg:sticky lg:top-24">
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-md">
+        <div class="mb-4">
+          <span class="text-3xl font-extrabold text-slate-900">
+            $<%= Number(listingDetail.price).toLocaleString() %>
+          </span>
+          <span class="text-sm text-slate-500"> / night</span>
         </div>
 
-        <!-- Right: Sticky Booking / Price Card -->
-        <div class="lg:sticky lg:top-24">
-          <div
-            class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-lg shadow-slate-200/50"
-          >
-            <div class="flex items-baseline justify-between mb-4">
-              <div>
-                <span class="text-3xl font-extrabold text-slate-900">
-                  $<%= Number(listingDetail.price).toLocaleString() %>
-                </span>
-                <span class="text-sm font-medium text-slate-500"> / night</span>
-              </div>
-              <span
-                class="text-xs font-semibold bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full"
-              >
-                Available
-              </span>
-            </div>
-
-            <div
-              class="border border-slate-200 rounded-xl overflow-hidden mb-5 divide-y divide-slate-200 text-xs"
-            >
-              <div class="grid grid-cols-2 divide-x divide-slate-200">
-                <div class="p-3 bg-slate-50/50">
-                  <div
-                    class="font-bold text-slate-500 uppercase tracking-wider text-[10px]"
-                  >
-                    Location
-                  </div>
-                  <div class="font-semibold text-slate-800 truncate">
-                    <%= listingDetail.location %>
-                  </div>
-                </div>
-                <div class="p-3 bg-slate-50/50">
-                  <div
-                    class="font-bold text-slate-500 uppercase tracking-wider text-[10px]"
-                  >
-                    Country
-                  </div>
-                  <div class="font-semibold text-slate-800 truncate">
-                    <%= listingDetail.country %>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="space-y-2.5">
-              <!-- Primary Booking Button -->
-              <button
-                type="button"
-                class="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-semibold py-3.5 px-4 rounded-xl shadow-md transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <span>Reserve Now</span>
-                <svg
-                  class="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                  />
-                </svg>
-              </button>
-
-              <!-- Edit Listing Form (GET) -->
-              <form
-                action="/listings/<%= listingDetail._id %>/edit"
-                method="GET"
-                class="w-full"
-              >
-                <button
-                  type="submit"
-                  class="w-full bg-slate-100 hover:bg-slate-200 active:scale-[0.99] text-slate-700 font-semibold py-2.5 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 text-sm border border-slate-200/60 cursor-pointer"
-                >
-                  <svg
-                    class="w-4 h-4 text-slate-500"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-                    />
-                  </svg>
-                  <span>Edit Listing</span>
-                </button>
-              </form>
-
-              <!-- Delete Listing Form (POST with _method=DELETE) -->
-              <form
-                action="/listings/<%= listingDetail._id %>?_method=DELETE"
-                method="POST"
-                class="w-full"
-                onsubmit="
-                  return confirm(
-                    'Are you sure you want to permanently delete this listing?',
-                  );
-                "
-              >
-                <button
-                  type="submit"
-                  class="w-full bg-rose-50 hover:bg-rose-100 text-rose-600 active:scale-[0.99] font-semibold py-2.5 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 text-sm border border-rose-200/70 cursor-pointer"
-                >
-                  <svg
-                    class="w-4 h-4 text-rose-500"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                    />
-                  </svg>
-                  <span>Delete Listing</span>
-                </button>
-              </form>
-            </div>
-
-            <p class="text-center text-xs text-slate-400 mt-3 font-medium">
-              You won't be charged yet
-            </p>
-          </div>
-        </div>
+        <button
+          type="button"
+          class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md cursor-pointer"
+        >
+          Reserve Now
+        </button>
       </div>
-    </main>
-  </body>
-</html>
+    </div>
+  </div>
+</div>
