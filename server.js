@@ -52,6 +52,11 @@ app.put("/listings/:id", async (req, res) => {
   await Listing.findByIdAndUpdate(id, { ...req.body.listing });
   res.redirect(`/listings/${id}`);
 });
+app.delete("/listings/:id/", async (req, res) => {
+  let { id } = req.params;
+  await Listing.findByIdAndDelete(id);
+  res.redirect("/listings");
+});
 
 app.listen(3000, () => {
   console.log("Server is listening at 3000");
